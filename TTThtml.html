@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe</title>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        height: 100vh;
+    }
+
+    .game-board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        gap: 10px;
+    }
+
+    .game-button {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+        color: black;
+        background-color: white;
+        border: 1px solid #666;
+    }
+
+    button:focus {
+        outline: none;
+    }
+</style>
+</head>
+<body>
+<div id="gameBoard" class="game-board">
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+    <button class="game-button"></button>
+</div>
+<p id="playerScore">Player Wins: 0</p>
+<p id="computerScore">Computer Wins: 0</p>
+<button onclick="startNewGame()">Restart Game</button>
+
+<script>
+const buttons = Array.from(document.getElementsByClassName('game-button'));
+const playerScoreLabel = document.getElementById('playerScore');
+const computerScoreLabel = document.getElementById('computerScore');
+let playerScore = 0;
+let computerScore = 0;
+let winnerFound = false;
+
+function checkWinner() {
+    const winCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
+    
+    for (let combo of winCombinations) {
+        if (buttons[combo[0]].innerText === buttons[combo[1]].innerText &&
+            buttons[combo[1]].innerText === buttons[combo[2]].innerText &&
+            buttons[combo[0]].innerText !== "") {
+            combo.forEach(i => buttons[i].style.backgroundColor = "green");
+            updateScore(buttons[combo[0]].innerText);
+            alert(`Player ${buttons[combo[0]].innerText} wins!`);
+            winnerFound = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+function updateScore(winner) {
+    if (winner === "X") {
+        playerScore++;
+    } else {
+        computerScore++;
+    }
+    playerScoreLabel.innerText = `Player Wins: ${playerScore}`;
+    computerScoreLabel.innerText = `Computer Wins: ${computerScore}`;
+}
+
+function tryWinOrBlock(char) {
+    for (let combo of [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]) {
+        let values = combo.map(i => buttons[i].innerText);
+        if (values.filter(v => v === char).length === 2 && values.includes("")) {
+            let idx = combo[values.indexOf("")];
+            buttons[idx].innerText = "O";
+            return true;
+        }
+    }
+    return false;
+}
+
+function computerMove() {
+    if (tryWinOrBlock("O")) {
+        if (checkWinner()) return;
+    }
+    if (tryWinOrBlock("X")) return;
+    let emptyButtons = buttons.filter(b => !b.innerText);
+    if (emptyButtons.length) {
+        let button = emptyButtons[Math.floor(Math.random() * emptyButtons.length)];
+        button.innerText = "O";
+        checkWinner();
+    }
+}
+
+function buttonClicked(index) {
+    let button = buttons[index];
+    if (!button.innerText && !winnerFound) {
+        button.innerText = "X"; // User's move
+        if (!checkWinner()) {
+            computerMove();
+        }
+    }
+}
+
+function startNewGame() {
+    winnerFound = false;
+    buttons.forEach(button => {
+        button.innerText = "";
+        button.style.backgroundColor = "white";
+    });
+}
+
+buttons.forEach((button, index) => {
+    button.addEventListener('click', () => buttonClicked(index));
+});
+
+document.querySelector('button').addEventListener('click', startNewGame);
+</script>
+</body>
+</html>

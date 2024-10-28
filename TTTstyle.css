@@ -1,0 +1,64 @@
+/* General page styling */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    height: 100vh;
+    background-color: #f4f4f4; /* Light grey background */
+}
+
+/* Game board styling */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px); /* Creates a 3x3 grid */
+    gap: 10px;
+    margin-bottom: 20px; /* Space below the board */
+}
+
+/* Styling for each game button */
+.game-button {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem; /* Large font size for X and O */
+    color: #333; /* Dark grey text for better contrast */
+    background-color: #fff; /* White background for the buttons */
+    border: 2px solid #666; /* Darker grey border */
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer; /* Cursor indicates clickable */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transitions for color and background */
+}
+
+/* Hover effects for buttons */
+.game-button:hover {
+    background-color: #ddd; /* Darker when hovered */
+}
+
+/* Styling for the score labels */
+#playerScore, #computerScore {
+    font-size: 1.2rem; /* Slightly larger font size for visibility */
+    color: #333; /* Dark grey text */
+    margin: 10px 0; /* Spacing around text */
+}
+
+/* Restart button styling */
+button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: white;
+    background-color: #007BFF; /* Bootstrap blue */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Smooth background color transition on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button:focus {
+    outline: none; /* Removes the default focus outline */
+}
